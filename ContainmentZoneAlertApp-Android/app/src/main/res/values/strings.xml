@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Containment Zone Alert App</string>
+    <string name="api_url">http://192.168.151.182:8080/</string>
+</resources>
