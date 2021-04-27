@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Containment Zone System</title>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+</head>
+
+<body>
+	<script>
+   $(document).ready(function() {
+       var isError = [[${#request.getParameter('success')}]]
+       console.log(isError);
+       if (isError){
+     	  alert("Successfully added");
+       }
+       if([[${param.keySet().contains('delsuccess')}]]){
+           var isDeleteSuccessfull = [[${#request.getParameter('delsuccess')}]];
+    	   if(isDeleteSuccessfull){
+    	      	  alert("Deleted Successfully");
+    	       }else{ 	
+    	    	   alert("Deleted Failed");
+    	       }
+       }
+       
+   });
+   
+   </script>
+	<div class="container my-2">
+		<h1>Containment Zone List</h1>
+
+		<a th:href="@{/cZone/add}" class="btn btn-primary btn-sm mb-3">
+			Add Containment Zone </a>
+
+		<table border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>Location</th>
+					<th>People Count</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="area : ${listCAreas}">
+					<td th:text="${area.address}"></td>
+					<td th:text="50"></td>
+					<td>
+						<form method="POST" th:action="@{/cZone/delete/{id}(id=${area.cId})}">
+							<input type="submit" value="Delete" class="btn btn-danger" />
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div th:if="${totalPages > 1}">
+			<div class="row col-sm-10">
+				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
+				<div class="col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
+						th:if="${currentPage != i}" th:href="@{'/czone/' + ${i}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+						&nbsp;
+					</span>
+				</div>
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/czone/' + ${currentPage + 1}}">Next</a> <span
+						th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/czone/' + ${totalPages}}">Last</a> <span
+						th:unless="${currentPage < totalPages}">Last</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

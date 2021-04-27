@@ -20,8 +20,9 @@ public class User {
 	private String email;
 	private String password;
 	private String Role;
-	@OneToOne(mappedBy = "user")
-	private UserLocation location;
+	
+//	@OneToOne(mappedBy = "user")
+//	private UserLocation location;
 	
 	
 	public Long getId() {
@@ -64,12 +65,12 @@ public class User {
 	public void setRole(String role) {
 		Role = role;
 	}
-	public UserLocation getLocation() {
-		return location;
-	}
-	public void setLocation(UserLocation location) {
-		this.location = location;
-	}
+//	public UserLocation getLocation() {
+//		return location;
+//	}
+//	public void setLocation(UserLocation location) {
+//		this.location = location;
+//	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", Role="

@@ -29,12 +29,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        goToHome();
         apiUrl = getResources().getString(R.string.api_url);
         Log.d("TESTING", "onCreate: apiUrl :"+apiUrl);
         setContentView(R.layout.activity_main);
         initWidgets();
 
         helloWorld();
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void helloWorld(){

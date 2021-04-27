@@ -37,6 +37,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+<!-- there is a dependency still using the old version of point geometry (vividsolutions.geom rather than the newer locationtech).
+
+Fortunately someone has branched jackson-databind. This branch will work with location tech : -->
+<dependency>
+    <groupId>com.graphhopper.external</groupId>
+    <artifactId>jackson-datatype-jts</artifactId>
+    <version>0.10-2.5-1</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -55,7 +63,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
@@ -71,17 +82,20 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+		
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
+			
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-spatial</artifactId>
+			
 		</dependency>
 
 		<dependency>
@@ -89,6 +103,15 @@
 			<artifactId>jts</artifactId>
 			<version>1.13</version>
 		</dependency>
+		<dependency>
+	    <groupId>org.locationtech.spatial4j</groupId>
+	    <artifactId>spatial4j</artifactId>
+	    <version>0.8</version>
+	</dependency>
+		<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -101,11 +124,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	<dependency>
-	    <groupId>io.jsonwebtoken</groupId>
-	    <artifactId>jjwt</artifactId>
-	    <version>0.9.1</version>
-	</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 	</dependencies>
 

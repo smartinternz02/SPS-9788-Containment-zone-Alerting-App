@@ -1,13 +1,16 @@
 package com.saravanan.models;
 
 
+import javax.annotation.Generated;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 
 @Entity
@@ -16,21 +19,46 @@ public class UserLocation {
 	@Id
 	private Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="id")
 	@MapsId
 	private User user;
-	
 
+
+	@Column(nullable = true)
 	private Point location;
 	
-	public UserLocation(User user, Point location) {
+	public UserLocation() {}
+
+	public UserLocation(Long id, User user, Point location) {
 		super();
-		this.user = user;
+		this.id = id;
 		this.location = location;
 	}
 
-	public UserLocation() {}
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
+	}
 
 	public User getUser() {
 		return user;
@@ -40,16 +68,6 @@ public class UserLocation {
 		this.user = user;
 	}
 
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
-	}
-	
-	
-	
 	
 	
 }

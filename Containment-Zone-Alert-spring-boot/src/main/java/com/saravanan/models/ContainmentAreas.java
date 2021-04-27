@@ -1,8 +1,9 @@
 package com.saravanan.models;
 
-import java.util.Date;
 
-import javax.persistence.CascadeType;
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,33 +11,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Fetch;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.util.GeometricShapeFactory;
 
-import com.vividsolutions.jts.geom.Point;
+
 @Entity
 public class ContainmentAreas {
   
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long cId;
 	
 	private Point location;
+	private String address; //we cant leave this field, if we reverse-geocode the latlng
+	
+	private Polygon boundaries;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
 	private User addedby;
-	@Temporal(TemporalType.DATE)
-	private Date adddedDate;
+	
+	private LocalDate adddedDate;
 	
 	public ContainmentAreas() {}
 
-	public ContainmentAreas(Long cId, Point location, User addedby, Date adddedDate) {
+	public ContainmentAreas(Long cId, Point location, String address, Polygon boundaries, User addedby,
+			LocalDate adddedDate) {
 		super();
 		this.cId = cId;
 		this.location = location;
+		this.address = address;
+		this.boundaries = boundaries;
 		this.addedby = addedby;
 		this.adddedDate = adddedDate;
 	}
@@ -57,6 +63,23 @@ public class ContainmentAreas {
 		this.location = location;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Polygon getBoundaries() {
+		return boundaries;
+	}
+
+	public void setBoundaries(Polygon boundaries) {
+		this.boundaries = boundaries;
+	}
+	
+
 	public User getAddedby() {
 		return addedby;
 	}
@@ -65,14 +88,17 @@ public class ContainmentAreas {
 		this.addedby = addedby;
 	}
 
-	public Date getAdddedDate() {
+	public LocalDate getAdddedDate() {
 		return adddedDate;
 	}
 
-	public void setAdddedDate(Date adddedDate) {
+	public void setAdddedDate(LocalDate adddedDate) {
 		this.adddedDate = adddedDate;
 	}
+
+  
 	
 	
+
 	
 }
