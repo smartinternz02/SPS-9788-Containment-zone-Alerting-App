@@ -77,6 +77,7 @@ public class OpenStreetResponseDeserializer extends StdDeserializer<OpenStreetMa
 					double lng = latlng.get(0).asDouble();
 	                double lat = latlng.get(1).asDouble();
 					Point eachPoint= GeometryUtil.parseLocation(lat, lng);
+					eachPoint.setSRID(GeometryUtil.SRID);
 					boundaries.add(eachPoint);
 					System.out.println("Points:"+eachPoint);
 				}
@@ -99,10 +100,14 @@ public class OpenStreetResponseDeserializer extends StdDeserializer<OpenStreetMa
 			double bottomLeft_lat = bottomRight_lat;
 			double bottomLeft_lng = topLeft_lng;
 			Point topLeft = GeometryUtil.parseLocation(topLeft_lat, topLeft_lng);
+			topLeft.setSRID(GeometryUtil.SRID);
 			Point bottomRight = GeometryUtil.parseLocation(bottomRight_lat, bottomRight_lng);
+			bottomRight.setSRID(GeometryUtil.SRID);
 			Point topRight = GeometryUtil.parseLocation(topRight_lat, topRight_lng);
+			topRight.setSRID(GeometryUtil.SRID);
 			Point bottomLeft = GeometryUtil.parseLocation(bottomLeft_lat, bottomLeft_lng);
-
+			bottomLeft.setSRID(GeometryUtil.SRID);
+			
 			boundaries.add(topLeft);
 			boundaries.add(topRight);
 			boundaries.add(bottomRight);

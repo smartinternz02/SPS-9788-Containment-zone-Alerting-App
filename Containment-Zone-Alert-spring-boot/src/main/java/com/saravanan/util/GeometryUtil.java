@@ -15,7 +15,8 @@ import org.locationtech.spatial4j.shape.ShapeFactory;
 import org.locationtech.spatial4j.shape.jts.JtsShapeFactory;
 
 public class GeometryUtil {
-
+    
+	public static final int SRID = 4326; //LatLng
 	private static WKTReader wktReader = new WKTReader();
 	
 	private static Geometry wktToGeometry(String wellKnownText) {
@@ -29,9 +30,11 @@ public class GeometryUtil {
 		System.out.println("###geometry :"+geometry);
 		return geometry;
 	}
-	 public static Point parseLocation(double lat,double lang) {
-			Geometry geometry = GeometryUtil.wktToGeometry(String.format("POINT (%s %s)",lat,lang));
-         return (Point)geometry;
+	 public static Point parseLocation(double lat,double lng) {
+			Geometry geometry = GeometryUtil.wktToGeometry(String.format("POINT (%s %s)",lng,lat));
+			Point p =(Point)geometry;
+			p.setSRID(4326);
+         return p;
 	 }
 	 
 	 public static Polygon getPolygonFromPoints(List<Point> points) {
@@ -39,11 +42,13 @@ public class GeometryUtil {
 		 JtsSpatialContext jtsSpatialContext = jtsSpatialContextFactory.newSpatialContext();
 		 JtsShapeFactory jtsShapeFactory = jtsSpatialContext.getShapeFactory();
 		 ShapeFactory.PolygonBuilder polygonBuilder = jtsShapeFactory.polygon();
-	    
+		 
 		 for(Point p : points) {
 			 polygonBuilder.pointXY(p.getX(), p.getY());
 			 System.out.println(p.toString());
 		 }
-		 return (Polygon)jtsShapeFactory.getGeometryFrom(polygonBuilder.build()); 
+		 Polygon boundaries =  (Polygon)jtsShapeFactory.getGeometryFrom(polygonBuilder.build());
+		 boundaries.setSRID(SRID);
+		 return boundaries;
 	 }
 }

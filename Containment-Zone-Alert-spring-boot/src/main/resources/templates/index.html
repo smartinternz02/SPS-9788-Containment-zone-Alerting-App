@@ -50,7 +50,7 @@
 			<tbody>
 				<tr th:each="area : ${listCAreas}">
 					<td th:text="${area.address}"></td>
-					<td th:text="50"></td>
+					<td th:text="${cZoneRepo.findUsersCountWithinBoundary(area.cId)}"></td>
 					<td>
 						<form method="POST" th:action="@{/cZone/delete/{id}(id=${area.cId})}">
 							<input type="submit" value="Delete" class="btn btn-danger" />

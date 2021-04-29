@@ -77,6 +77,8 @@ public class AdminController {
 
 		Page<ContainmentAreas> page = locService.findContainmentZonePaginated(pageNo, pageSize);
 		List<ContainmentAreas> cAreas = page.getContent();
+		
+		model.addAttribute("cZoneRepo",cZoneRepo);
 		model.addAttribute("currentPage", pageNo);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("totalItems", page.getTotalElements());

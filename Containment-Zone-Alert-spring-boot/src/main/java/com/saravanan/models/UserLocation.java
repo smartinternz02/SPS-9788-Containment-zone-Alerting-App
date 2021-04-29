@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 
 import org.locationtech.jts.geom.Point;
 
+import com.saravanan.util.GeometryUtil;
+
 
 @Entity
 public class UserLocation {
@@ -58,6 +60,7 @@ public class UserLocation {
 
 	public void setLocation(Point location) {
 		this.location = location;
+		location.setSRID(GeometryUtil.SRID);
 	}
 
 	public User getUser() {

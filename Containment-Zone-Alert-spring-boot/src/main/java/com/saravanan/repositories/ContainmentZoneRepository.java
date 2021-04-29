@@ -25,4 +25,7 @@ public interface ContainmentZoneRepository extends JpaRepository<ContainmentArea
 	
 	@Query(value="select zone from containment_areas where latitude=:lat and longitude=:lng",nativeQuery = true)
 	Optional<ContainmentAreas> findCZoneWithLatLng(double lat,double lng);
+	
+	@Query(value="select count(*) from user_location as ul join containment_areas as ca where ca.c_id=:cId and st_within(ul.location,ca.boundaries) ",nativeQuery = true )
+	int findUsersCountWithinBoundary(@Param("cId") long cId);
 }

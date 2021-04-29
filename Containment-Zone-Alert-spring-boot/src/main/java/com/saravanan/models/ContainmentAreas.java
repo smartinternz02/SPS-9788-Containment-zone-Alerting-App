@@ -16,6 +16,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.util.GeometricShapeFactory;
 
+import com.saravanan.util.GeometryUtil;
+
 
 @Entity
 public class ContainmentAreas {
@@ -23,9 +25,11 @@ public class ContainmentAreas {
 	@Id
 	private Long cId;
 	
-	private Point location;
-	private String address; //we cant leave this field, if we reverse-geocode the latlng
+	Point location;
 	
+	private String address; //we can leave this field, if we reverse-geocode the latlng
+	
+	@Column(nullable = true)
 	private Polygon boundaries;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +64,9 @@ public class ContainmentAreas {
 	}
 
 	public void setLocation(Point location) {
+	    location.setSRID(GeometryUtil.SRID);
 		this.location = location;
+	
 	}
 
 	public String getAddress() {
@@ -96,6 +102,13 @@ public class ContainmentAreas {
 		this.adddedDate = adddedDate;
 	}
 
+	@Override
+	public String toString() {
+		return "ContainmentAreas [cId=" + cId + ", location=" + location + ", address=" + address + ", boundaries="
+				+ boundaries + ", addedby=" + addedby + ", adddedDate=" + adddedDate + "]";
+	}
+
+	
   
 	
 	

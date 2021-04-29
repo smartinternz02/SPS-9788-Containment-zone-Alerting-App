@@ -5,6 +5,7 @@ import org.locationtech.jts.geom.Point;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.saravanan.deserializers.OpenStreetResponseDeserializer;
+import com.saravanan.util.GeometryUtil;
 
 @JsonDeserialize(using = OpenStreetResponseDeserializer.class)
 public class OpenStreetMapResponse {
@@ -31,9 +32,13 @@ public void setDisplayName(String displayName) {
 	this.displayName = displayName;
 }
 public List<Point> getBounds() {
+	
 	return bounds;
 }
 public void setBounds(List<Point> bounds) {
+
+	for(Point b:bounds)
+		  b.setSRID(GeometryUtil.SRID);
 	this.bounds = bounds;
 }
    
