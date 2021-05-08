@@ -36,9 +36,9 @@
 	<div class="container my-2">
 		<h1>Containment Zone List</h1>
 
-		<a th:href="@{/cZone/add}" class="btn btn-primary btn-sm mb-3">
+		<a th:href="@{/admin/cZone/add}" class="btn btn-primary btn-sm mb-3">
 			Add Containment Zone </a>
-
+        <a th:href="@{/logout}">Logout</a>
 		<table border="1" class="table table-striped table-responsive-md">
 			<thead>
 				<tr>
@@ -52,7 +52,7 @@
 					<td th:text="${area.address}"></td>
 					<td th:text="${cZoneRepo.findUsersCountWithinBoundary(area.cId)}"></td>
 					<td>
-						<form method="POST" th:action="@{/cZone/delete/{id}(id=${area.cId})}">
+						<form method="POST" th:action="@{/admin/cZone/delete/{id}(id=${area.cId})}">
 							<input type="submit" value="Delete" class="btn btn-danger" />
 						</form>
 					</td>
@@ -65,20 +65,20 @@
 				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
 				<div class="col-sm-1">
 					<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
-						th:if="${currentPage != i}" th:href="@{'/czone/' + ${i}}">[[${i}]]</a>
+						th:if="${currentPage != i}" th:href="@{'/admin/czone/' + ${i}}">[[${i}]]</a>
 						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
 						&nbsp;
 					</span>
 				</div>
 				<div class="col-sm-1">
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{'/czone/' + ${currentPage + 1}}">Next</a> <span
+						th:href="@{'/admin/czone/' + ${currentPage + 1}}">Next</a> <span
 						th:unless="${currentPage < totalPages}">Next</span>
 				</div>
 
 				<div class="col-sm-1">
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{'/czone/' + ${totalPages}}">Last</a> <span
+						th:href="@{'/admin/czone/' + ${totalPages}}">Last</a> <span
 						th:unless="${currentPage < totalPages}">Last</span>
 				</div>
 			</div>

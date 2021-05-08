@@ -31,7 +31,7 @@ public class GeometryUtil {
 		return geometry;
 	}
 	 public static Point parseLocation(double lat,double lng) {
-			Geometry geometry = GeometryUtil.wktToGeometry(String.format("POINT (%s %s)",lng,lat));
+			Geometry geometry = GeometryUtil.wktToGeometry(String.format("POINT (%s %s)",lat,lng));
 			Point p =(Point)geometry;
 			p.setSRID(4326);
          return p;
@@ -44,7 +44,7 @@ public class GeometryUtil {
 		 ShapeFactory.PolygonBuilder polygonBuilder = jtsShapeFactory.polygon();
 		 
 		 for(Point p : points) {
-			 polygonBuilder.pointXY(p.getX(), p.getY());
+			 polygonBuilder.pointXY(p.getY(), p.getX());
 			 System.out.println(p.toString());
 		 }
 		 Polygon boundaries =  (Polygon)jtsShapeFactory.getGeometryFrom(polygonBuilder.build());

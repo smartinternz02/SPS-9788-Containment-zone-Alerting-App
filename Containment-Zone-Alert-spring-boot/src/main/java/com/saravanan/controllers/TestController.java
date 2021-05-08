@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -32,6 +33,7 @@ public class TestController {
 	WebClient.Builder builder;
 	@Autowired
 	private UserlocationRepository userLocRepo;
+	
 	@GetMapping("/cZone/add/test")
 	@ResponseBody
 	public void addCZOnetext() {
@@ -78,6 +80,10 @@ public class TestController {
 		return String.valueOf(count);
 	}
 	
-	
+	@GetMapping("/cZone/test/within/{id}")
+	@ResponseBody
+	public String userInsideCZoneName(@RequestParam("id") long id) {
+		return cZoneRepo.findCZoneWhereUserIs(id)[0];
+	}
 	
 }

@@ -101,6 +101,16 @@ public class ContainmentAreas {
 	public void setAdddedDate(LocalDate adddedDate) {
 		this.adddedDate = adddedDate;
 	}
+	public Double getLatitude() {
+		if(this.location!=null)
+			return this.location.getY();
+		return null;
+	}
+	public Double getLongitude() {
+		if(this.location!=null)
+			return this.location.getX();
+		 return null;
+	}
 
 	@Override
 	public String toString() {

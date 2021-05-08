@@ -18,6 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.saravanan.MyUserDetailService;
 import com.saravanan.util.JwtUtil;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -36,12 +39,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String email = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            email = jwtUtil.extractEmail(jwt);
+        try {
+	        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+	            jwt = authorizationHeader.substring(7);
+	            email = jwtUtil.extractEmail(jwt);
+	        }
+        }catch (IllegalArgumentException e) {
+            logger.error("an error occured during getting username from token", e);
+        } catch (ExpiredJwtException e) {
+            logger.warn("the token is expired and not valid anymore", e);
+        } catch(SignatureException e){
+            logger.error("Authentication Failed. Username or Password not valid.");
         }
 
-
+   
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);

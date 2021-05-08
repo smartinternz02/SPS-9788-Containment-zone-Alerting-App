@@ -29,7 +29,6 @@ public class ContainmentZoneAlertApp implements CommandLineRunner {
     private UserRepository userRepo;
 	public static void main(String[] args) {
 		SpringApplication.run(ContainmentZoneAlertApp.class, args);
-		System.out.println(org.hibernate.Version.getVersionString());
 
 	}
 	@Override

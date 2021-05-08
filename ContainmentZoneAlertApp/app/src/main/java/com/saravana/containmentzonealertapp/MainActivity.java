@@ -29,12 +29,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        goToHome();
         apiUrl = getResources().getString(R.string.api_url);
         Log.d("TESTING", "onCreate: apiUrl :"+apiUrl);
         setContentView(R.layout.activity_main);
         initWidgets();
-
         helloWorld();
     }
 
@@ -44,10 +42,12 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    //pinging with jwt
     private void helloWorld(){
          String jwtToken = AuthUtils.getAuthorizationToken(MainActivity.this);
          if(jwtToken.isEmpty()){
              Log.d("TESTING", "helloWorld: No Auth token");
+             progressBar.setVisibility(View.GONE);
              return;
          }
         Log.d("TESTING", "helloWorld: "+jwtToken);
@@ -58,20 +58,21 @@ public class MainActivity extends AppCompatActivity {
                  if(response.isSuccessful()){
                      try {
                          Log.d("TESTING", "onResponse: "+response.body().string());
+                         goToHome();
+                         progressBar.setVisibility(View.GONE);
                          return;
                      } catch (IOException ioException) {
                          ioException.printStackTrace();
                      }
                  }
-                 try {
-                     Log.d("TESTING", "onResponse: "+response.errorBody().string());
-                 } catch (IOException ioException) {
-                     ioException.printStackTrace();
-                 }
+
+                 progressBar.setVisibility(View.GONE);
+
              }
              @Override
              public void onFailure(Call<ResponseBody> call, Throwable t) {
                  Log.d("TESTING", "onResponse: "+t.getLocalizedMessage());
+                 progressBar.setVisibility(View.GONE);
 
              }
          });
@@ -87,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(view-> goToRegisterActivity());
         loginBtn.setOnClickListener(view-> loginUser()
         );
+
+        progressBar.setVisibility(View.VISIBLE);
     }
     private void goToRegisterActivity(){
         Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     AuthUtils.storeAuthorizationToken(MainActivity.this, jwt);
+                    goToHome();
                 }else{
                     Toast.makeText(MainActivity.this,"Login Failed",Toast.LENGTH_SHORT).show();
                 }

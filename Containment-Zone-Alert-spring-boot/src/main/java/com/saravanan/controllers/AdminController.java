@@ -65,12 +65,19 @@ public class AdminController {
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 
-	@RequestMapping(value = "/home", method = { RequestMethod.GET, RequestMethod.POST })
+
+	@GetMapping("/")
+	public String getBlank(Model model) {
+		return "redirect:/admin/home";
+	}
+	@RequestMapping(value = "/admin/home", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getHome(Model model) {
 		return findPaginatedZone(1, model);
 	}
 
-	@GetMapping("/cZone/{pageNo}")
+	
+	
+	@GetMapping("/admin/cZone/{pageNo}")
 	public String findPaginatedZone(@PathVariable(value = "pageNo") int pageNo, Model model) {
 
 		int pageSize = 10;
@@ -89,7 +96,7 @@ public class AdminController {
 		return "index";
 	}
 
-	@GetMapping("/cZone/add")
+	@GetMapping("/admin/cZone/add")
 	public String getAddCZone(Model model, @RequestParam(name = "error", required = false) Boolean eror) {
 
 		model.addAttribute("form", new CZoneForm());
@@ -98,7 +105,7 @@ public class AdminController {
 
 	}
 
-	@PostMapping("/cZone/add")
+	@PostMapping("/admin/cZone/add")
 	public String postAddCZone(@ModelAttribute("form") CZoneForm form) {
 
 		System.out.println(form.getLatitude() + " " + form.getLongitude());
@@ -128,23 +135,23 @@ public class AdminController {
 			cZoneRepo.save(cArea);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "redirect:/cZone/add?error=true";
+			return "redirect:/admin/cZone/add?error=true";
 		}
 
-		return "redirect:/cZone/1?success=true";
+		return "redirect:/admin/cZone/1?success=true";
 	}
 
-	@PostMapping("/cZone/delete/{id}")
+	@PostMapping("/admin/cZone/delete/{id}")
 	public String deleteCZone(@PathVariable("id") long id) {
 		try {
 			cZoneRepo.deleteById(id);
 		} catch (IllegalArgumentException ex) {
-			return "redirect:/cZone/1?delsuccess=false";
+			return "redirect:/admin/cZone/1?delsuccess=false";
 		}
-		return "redirect:/cZone/1?delsuccess=true";
+		return "redirect:/admin/cZone/1?delsuccess=true";
 	}
 
-	@GetMapping("/error/403")
+	@GetMapping("/admin/error/403")
 	public String error403Page() {
 		return "error403page";
 	}

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Containment Zone Alert App</string>
-    <string name="api_url">http://192.168.151.182:8080/</string>
+    <string name="api_url">http://192.168.45.182:8080/</string>
+    <string name="safezone_msg">You are in safe zone</string>
+    <string name="dangerzone_msg">You are in a containment Zone</string>
+    <string name="notification_title">Current Location Update</string>
+    <string name="notification_message">Tracking your location</string>
 </resources>

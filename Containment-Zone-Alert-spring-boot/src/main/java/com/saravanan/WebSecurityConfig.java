@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -34,8 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private MyUserDetailService myUserDetailsService;
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,43 +44,48 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		 
-		 
-		httpSecurity.csrf().disable()
-		        .formLogin()
-		        .usernameParameter("email")
-		        .permitAll()
-		        .and()
-		        .logout()
-		        .permitAll()
-		        .and()
-				.authorizeRequests().antMatchers("/authenticate","/register").permitAll()
-				         .antMatchers("/home,/cZone/**").hasRole("ADMIN")
-						.anyRequest().authenticated().and()
-						.exceptionHandling()
-						.accessDeniedPage("/error/403")
-						.and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-				.and()
-				.formLogin()
-				 .usernameParameter("email")
-				 .successForwardUrl("/home")
-				.permitAll();
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	@Configuration
+	@Order(1)
+	public static class AdminConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+
+			http.
+					antMatcher("/admin/**").authorizeRequests().anyRequest()
+					.hasAuthority("ADMIN").and().exceptionHandling().accessDeniedPage("/admin/error/403").and()
+					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and().formLogin()
+					.usernameParameter("email").defaultSuccessUrl("/admin/home").permitAll().and().logout().permitAll();
+		}
 
 	}
 
-	
-	
+	@Configuration
+	@Order(2)
+	public static class UserConfigurationAdapter extends WebSecurityConfigurerAdapter {
+		@Autowired
+		private JwtRequestFilter jwtRequestFilter;
+
+		@Override
+		protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+			httpSecurity.csrf().disable().
+					antMatcher("/user/**").authorizeRequests().antMatchers("/user/authenticate", "/user/register")
+					.permitAll().anyRequest().hasAuthority("USER").and().sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().formLogin().disable();
+
+			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		}
+	}
+
 }

@@ -139,6 +139,7 @@ Fortunately someone has branched jackson-databind. This branch will work with lo
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+	   <finalName>contaiment-zone-alert</finalName>
 	</build>
 
 </project>
