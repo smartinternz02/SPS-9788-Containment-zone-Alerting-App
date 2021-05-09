@@ -126,7 +126,7 @@ public class LocationUpdateService extends Service implements  ILocationService{
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-
+        mLocationRequest.setSmallestDisplacement(1000f);
 
 
         fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationUpdateCallback,
@@ -161,7 +161,7 @@ public class LocationUpdateService extends Service implements  ILocationService{
                 cZoneArea.setLat(lat);
                 cZoneArea.setLng(lng);
                 cZoneArea.setName(address);
-                if(address!=LocationUpdateService.SAFEZONE_FLAG){
+                if(!address.equals(LocationUpdateService.SAFEZONE_FLAG)){
                     notifyAtDanger();
                 }
                 locChangeEmitter.onNext(cZoneArea);
